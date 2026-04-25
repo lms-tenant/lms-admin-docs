@@ -1,0 +1,34 @@
+---
+title: Bienvenido al Panel de Administración
+description: Documentación completa para gestionar tu academia online.
+template: splash
+hero:
+  tagline: Todo lo que necesitás para gestionar tu academia online, en un solo lugar.
+  actions:
+    - text: Empezar
+      link: /primeros-pasos/configuracion-inicial
+      icon: right-arrow
+      variant: primary
+    - text: Ver checklist de lanzamiento
+      link: /primeros-pasos/checklist-lanzamiento
+      icon: list-format
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## ¿Por dónde empezar?
+
+<CardGrid stagger>
+  <Card title="Configuración inicial" icon="setting">
+    Nombre, logo y colores de tu academia. [Empezar →](/primeros-pasos/configuracion-inicial)
+  </Card>
+  <Card title="Crear tu primer curso" icon="open-book">
+    Estructura, módulos y lecciones. [Ver guía →](/cursos/crear-curso)
+  </Card>
+  <Card title="Invitar estudiantes" icon="group">
+    Por link, invitación por email o inscripción directa. [Ver guía →](/usuarios/invitar-estudiantes)
+  </Card>
+  <Card title="Configurar la tienda" icon="puzzle">
+    Precios, pagos y suscripciones. [Ver guía →](/tienda/configurar-tienda)
+  </Card>
+</CardGrid>
