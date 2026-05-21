@@ -23,6 +23,7 @@ Si es tu primera vez, seguí este orden:
 | [Analíticas](analiticas/dashboard.md) | Métricas de progreso y ventas |
 | [Personalización](personalizacion/branding.md) | Logo, colores y dominio propio |
 | [Configuración](configuracion/ajustes-generales.md) | Ajustes generales de la plataforma |
+| [Design System](design-system-ui/) | Componentes visuales, branding y mockups de la plataforma |
 
 ---
 
