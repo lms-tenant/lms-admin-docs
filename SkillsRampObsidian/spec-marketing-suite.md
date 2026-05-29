@@ -30,11 +30,25 @@ The platform today handles course creation and delivery well. The Marketing Suit
 
 ### Feature 1.1 — Coupon & Discount System
 
+#### Where Coupons Live
+
+Coupons have **two entry points** in the admin UI:
+
+1. **Store (Tienda) → Product page → Coupons tab** — when a tenant is managing a specific course in the store, they can create coupons scoped to that product directly. This is the most natural creation flow.
+2. **Marketing → Coupons** — a global panel showing all coupons across all store products, for tenants who want to manage everything in one place.
+
+Both entry points use the same underlying data and API. A coupon created from the Store is identical to one created from Marketing — the only difference is that the Store flow pre-fills the `productId` and sets `appliesTo = 'product'` by default.
+
+> **Key constraint:** Coupons only apply to products that are listed in the Store (`StoreProduct`). A course must have an active store listing to be eligible for a coupon. Coupons cannot be created for courses that are not in the store.
+
 #### Requirements
 
-- [ ] Tenants can create discount coupons from the admin panel
+- [ ] Tenants can create coupons from two places: **Store product page** and **Marketing → Coupons**
+- [ ] Coupons are always associated with at least one store product — a coupon cannot exist without a product scope
 - [ ] Four discount types: `percentage`, `fixed_amount`, `fixed_price`, `free`
-- [ ] Coupons can apply to: all courses, a specific course, or a specific category
+- [ ] Coupons can apply to: a specific store product, all store products, or a store category
+- [ ] When creating from the Store product page, `appliesTo` defaults to that product and is pre-filled
+- [ ] When creating from Marketing, the tenant must explicitly select the product scope
 - [ ] Optional expiry date — after which the coupon is automatically invalid
 - [ ] Optional usage limit (total uses across all students)
 - [ ] Optional per-student usage limit (default: 1 use per student)
@@ -42,6 +56,7 @@ The platform today handles course creation and delivery well. The Marketing Suit
 - [ ] Tenants can deactivate a coupon without deleting it (preserves history)
 - [ ] Students enter the coupon code at checkout — real-time validation with price update
 - [ ] If a coupon is expired, exhausted, or invalid: show a specific error message
+- [ ] The coupon is only valid if the product it applies to is currently active in the store
 
 #### Data Model
 
@@ -53,9 +68,9 @@ The platform today handles course creation and delivery well. The Marketing Suit
   code: string                    // unique per tenant, stored uppercase
   type: enum                      // 'percentage' | 'fixed_amount' | 'fixed_price' | 'free'
   value: number                   // % or USD amount (ignored if type = 'free')
-  appliesTo: enum                 // 'all' | 'course' | 'category'
-  courseId: uuid | null
-  categoryId: uuid | null
+  appliesTo: enum                 // 'product' | 'all_products' | 'category'
+  storeProductId: uuid | null     // FK → StoreProduct (required if appliesTo = 'product')
+  storeCategoryId: uuid | null    // FK → StoreCategory (required if appliesTo = 'category')
   expiresAt: Date | null
   maxUses: number | null          // total usage limit
   maxUsesPerStudent: number       // default: 1
@@ -70,6 +85,7 @@ The platform today handles course creation and delivery well. The Marketing Suit
   id: uuid
   couponId: uuid
   orderId: uuid
+  storeProductId: uuid            // which product was purchased with this coupon
   studentId: uuid
   tenantId: uuid
   discountAmount: number          // actual USD amount discounted
@@ -80,7 +96,8 @@ The platform today handles course creation and delivery well. The Marketing Suit
 #### API Endpoints
 
 **Admin (tenant)**
-- `GET /api/t/:tenantSlug/admin/coupons` — list all coupons with usage stats
+- `GET /api/t/:tenantSlug/admin/coupons` — list all coupons with usage stats (filterable by `storeProductId`)
+- `GET /api/t/:tenantSlug/admin/store/products/:productId/coupons` — list coupons for a specific product
 - `POST /api/t/:tenantSlug/admin/coupons` — create coupon
 - `PUT /api/t/:tenantSlug/admin/coupons/:id` — update coupon
 - `PATCH /api/t/:tenantSlug/admin/coupons/:id/deactivate` — soft deactivate
@@ -90,11 +107,11 @@ The platform today handles course creation and delivery well. The Marketing Suit
 - `POST /api/t/:tenantSlug/coupons/validate` — validate code + return discount amount
   ```typescript
   // Request
-  { code: string, courseId: uuid }
+  { code: string, storeProductId: uuid }
   // Response
   { valid: true, discountAmount: number, finalPrice: number }
   // or
-  { valid: false, reason: 'expired' | 'exhausted' | 'not_found' | 'not_applicable' }
+  { valid: false, reason: 'expired' | 'exhausted' | 'not_found' | 'not_applicable' | 'product_not_in_store' }
   ```
 
 #### Checkout Integration
@@ -102,19 +119,40 @@ The platform today handles course creation and delivery well. The Marketing Suit
 - Add `couponCode` field to the existing checkout request body
 - On payment confirmation: create `CouponRedemption` record, increment `coupon.usedCount`
 - Store `couponId` and `discountAmount` on the `Order` entity
+- Validate that the store product is still active at the time of checkout (not just at coupon entry)
 
-#### Admin UI — Coupon Panel
+#### Admin UI — Entry Point 1: Store Product Page
+
+On the Store product management page, add a **Coupons** tab:
 
 ```
-Coupons
-─────────────────────────────────────────────────────
-[ + New Coupon ]
+[Product: UI Design Course]  [Details] [Pricing] [Coupons] [Stats]
+──────────────────────────────────────────────────────────────────
+Coupons for this product
+[ + New Coupon for this product ]
 
-Code         Type       Value    Uses      Expires     Status
-LAUNCH20     %          20%      12/50     Jun 1       Active  [Edit] [Deactivate]
-FREECOURSE   Free       —        3/—       —           Active  [Edit] [Deactivate]
-SUMMER10     $          $10      50/50     —           Exhausted
+Code         Type    Value   Uses    Expires    Status
+UIOPEN20     %       20%     8/50    Jun 1      Active   [Edit] [Deactivate]
+UILAUNCH     Free    —       2/10    —          Active   [Edit] [Deactivate]
 ```
+
+Clicking **+ New Coupon for this product** opens the coupon form with `appliesTo = 'product'` and the current product pre-selected and locked.
+
+#### Admin UI — Entry Point 2: Marketing → Coupons (Global Panel)
+
+```
+All Coupons
+──────────────────────────────────────────────────────────────────
+[ + New Coupon ]   [ Filter by product ▼ ]
+
+Code         Product              Type    Value   Uses    Expires    Status
+UIOPEN20     UI Design Course     %       20%     8/50    Jun 1      Active
+SUMMER20     All products         %       20%     34/—    Jun 30     Active
+UILAUNCH     UI Design Course     Free    —       2/10    —          Active
+EXCEL10      Excel Masterclass    $       $10     50/50   —          Exhausted
+```
+
+Clicking **+ New Coupon** opens the form with a required **"Applies to"** selector (no default — must choose).
 
 ---
 
