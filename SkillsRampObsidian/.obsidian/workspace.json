@@ -11,10 +11,14 @@
             "id": "9bbf180be65e052c",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "business-model-canvas.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "Nueva pestaña"
+              "title": "business-model-canvas"
             }
           }
         ]
@@ -176,8 +180,18 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "9bbf180be65e052c",
+  "active": "bde5209241b686c0",
   "lastOpenFiles": [
-    "spec-plan-billing-features.md"
+    "revenue-projections.md",
+    "business-model-canvas.md",
+    "daily-log-template.md",
+    "task-tracker.md.tmp.71640.e2932b57d2f0",
+    "task-tracker.md",
+    "spec-marketing-tenants.md",
+    "spec-coupons-discounts.md",
+    "spec-marketing-suite.md",
+    "pricing-strategy.md",
+    "spec-plan-billing-features.md",
+    "spec-project-lesson-type.md"
   ]
 }
