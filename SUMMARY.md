@@ -5,6 +5,7 @@
 ## 🚀 Primeros pasos
 
 * [Configuración inicial](primeros-pasos/configuracion-inicial.md)
+* [Acceso y organizaciones](primeros-pasos/acceso-y-organizaciones.md)
 * [Recorrido por el panel](primeros-pasos/recorrido-panel.md)
 * [Checklist de lanzamiento](primeros-pasos/checklist-lanzamiento.md)
 
