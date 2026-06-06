@@ -13,6 +13,7 @@ export default defineConfig({
           label: '🚀 Primeros pasos',
           items: [
             { label: 'Configuración inicial', slug: 'primeros-pasos/configuracion-inicial' },
+            { label: 'Acceso y organizaciones', slug: 'primeros-pasos/acceso-y-organizaciones' },
             { label: 'Recorrido por el panel', slug: 'primeros-pasos/recorrido-panel' },
             { label: 'Checklist de lanzamiento', slug: 'primeros-pasos/checklist-lanzamiento' },
           ],
