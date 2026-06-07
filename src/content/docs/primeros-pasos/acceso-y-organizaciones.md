@@ -22,9 +22,9 @@ También podés usar **Continuar con Google** cuando esté habilitado.
 
 Si sos parte de más de una academia, podés cambiar entre ellas sin volver a iniciar sesión:
 
-1. En el panel, abrí la barra lateral y desplegá **Mis organizaciones**.
-2. Vas a ver todas las academias en las que participás.
-3. Hacé clic en la que querés abrir → se abre **en una pestaña nueva**, ya con la sesión iniciada.
+1. En el menú lateral, entrá a **Mis Organizaciones**.
+2. Vas a ver, en tarjetas, todas las academias en las que participás (con tu rol en cada una).
+3. Hacé clic en **Administrar** en la que querés abrir → se abre **en una pestaña nueva**, ya con la sesión iniciada.
 
 Detalles a tener en cuenta:
 
