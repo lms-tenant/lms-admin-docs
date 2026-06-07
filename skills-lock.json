@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "brand-naming-strategies": {
+      "source": "mike-coulbourn/claude-vibes",
+      "sourceType": "github",
+      "skillPath": "plugins/vibes/skills/brand-naming-strategies/SKILL.md",
+      "computedHash": "78ef1edfc180f32abe0626ed58b486df7f727ed0b922ee44b1328b1dfe9ec1cc"
+    }
+  }
+}
