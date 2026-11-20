@@ -44,7 +44,7 @@ Cuando cumple los requisitos, aparece un botón **Descargar certificado** en la 
 - Nombre del curso
 - Fecha de emisión
 - Logo y nombre de tu academia
-- Firma y cargo del firmante, si los cargaste
+- La firma (la imagen que subiste o, sin imagen, el nombre del firmante escrito como firma) y el cargo del firmante
 - Código QR y código de verificación
 
 En la misma página el estudiante puede **Ver verificación**, **Copiar enlace**, **Compartir en LinkedIn**, **Compartir en X** y **Agregar a mi perfil de LinkedIn**. El enlace que comparte lleva a la página pública de verificación.
@@ -53,7 +53,8 @@ En la misma página el estudiante puede **Ver verificación**, **Copiar enlace**
 
 El diseño se edita en **Sitio › Certificados**. Ahí podés cambiar:
 
-- Los textos, los colores, el logo y la firma con el nombre y el cargo del firmante
+- Los textos, los colores, el logo y el nombre y el cargo del firmante
+- **Firma**: si subís una imagen, el certificado muestra esa imagen. Sin imagen, el nombre del firmante se escribe como firma en letra manuscrita. Si nunca cargaste un firmante, firma el dueño de la academia, y si borrás el nombre y guardás, el certificado sale sin firma
 - **Ubicación del logo**: arriba del nombre (por defecto), al pie junto a la firma, en la esquina o en lugar del nombre
 - **Tipografía**: la fuente y el tamaño de cada línea. Por defecto usa Playfair Display para la academia, el alumno y el curso, y la fuente de texto de tu marca para el resto
 
